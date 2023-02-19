@@ -71,11 +71,6 @@ resource "aws_cloudfront_cache_policy" "crc" {
   }
 }
 
-resource "aws_cloudfront_response_headers_policy" "crc" {
-  name    = "crc-headers-response-policy"
-  comment = "Response Policy for Cloud Resume"
-}
-
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name              = aws_s3_bucket.crc.bucket_regional_domain_name
@@ -93,7 +88,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
-    response_headers_policy_id = aws_cloudfront_response_headers_policy.crc.id
     cache_policy_id = aws_cloudfront_cache_policy.crc.id
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
