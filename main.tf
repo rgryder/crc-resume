@@ -84,7 +84,7 @@ data "cloudflare_zones" "gryderio" {
 }
   
 resource "cloudflare_record" "resume" {
-  zone_id = data.cloudflare_zones.gryderio.id
+  zone_id = data.cloudflare_zones.gryderio.zones[0].id
   name    = "resume"
   value   = aws_cloudfront_distribution.crc.domain_name
   type    = "CNAME"
