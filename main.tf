@@ -95,6 +95,9 @@ resource "aws_cloudfront_distribution" "crc" {
   origin {
     domain_name              = aws_s3_bucket.crc.bucket_regional_domain_name
     origin_id                = local.s3_origin_id
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.crc.cloudfront_access_identity_path
+    }
   }
 
   enabled             = true
@@ -124,4 +127,25 @@ resource "aws_cloudfront_distribution" "crc" {
     ssl_support_method = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
+}
+
+resource "aws_cloudfront_origin_access_identity" "crc" {
+  comment = "OAI for Cloud Resume"
+}
+
+data "aws_iam_policy_document" "crc" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.crc.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.crc.iam_arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "crc" {
+  bucket = aws_s3_bucket.crc.id
+  policy = data.aws_iam_policy_document.crc.json
 }
