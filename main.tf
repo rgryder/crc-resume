@@ -76,9 +76,15 @@ resource "aws_cloudfront_cache_policy" "crc" {
     }
   }
 }
+
+data "cloudflare_zones" "gryderio" {
+  filter {
+    name = "gryder.io"
+  }
+}
   
 resource "cloudflare_record" "resume" {
-  zone_id = "gryder.io"
+  zone_id = data.cloudflare_zones.gryderio.id
   name    = "resume"
   value   = aws_cloudfront_distribution.crc.domain_name
   type    = "CNAME"
