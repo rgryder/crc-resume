@@ -38,7 +38,14 @@ resource "aws_s3_object" "resumecss" {
 }
 
 locals {
-  s3_origin_id = "rgrydercrc.s3.us-east-1.amazonaws.com"  
+  s3_origin_id = "rgrydercrc.s3.us-east-1.amazonaws.com"
+  resume_url = "resume.gryder.io"
+}
+
+data "aws_acm_certificate" "resume" {
+  domain      = local.resume_url
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
@@ -53,12 +60,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   comment             = "Cloud Resume Cloudfront Distribution"
   default_root_object = "index.html"
 
-  aliases = ["resume.gryder.io"]
+  aliases = [local.resume_url]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
+    response_headers_policy_id = "CRCCORS"
     cache_policy_id = "Managed-CachingOptimized"
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
@@ -67,6 +75,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = 
+    acm_certificate_arn = aws_acm_certificate.resume.arn
   }
 }
