@@ -8,10 +8,11 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "~> 3.0"
     }
-  backend "remote" {
-    organization = "gryder-io"
-    workspaces {
-      name = "crc-terraform"
+    backend "remote" {
+      organization = "gryder-io"
+      workspaces {
+        name = "crc-terraform"
+      }
     }
   }
 }
