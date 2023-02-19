@@ -4,7 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.0"
     }
-  }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 3.0"
+    }
   backend "remote" {
     organization = "gryder-io"
     workspaces {
@@ -15,6 +18,8 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {}
+  
+provider "cloudflare" {}
 
 resource "aws_s3_bucket" "crc" {
   bucket = "rgrydercrc"
@@ -70,8 +75,16 @@ resource "aws_cloudfront_cache_policy" "crc" {
     }
   }
 }
+  
+resource "cloudflare_record" "resume" {
+  zone_id = "gryder.io"
+  name    = "resume"
+  value   = aws_cloudfront_distribution.crc.domain_name
+  type    = "CNAME"
+  ttl     = 3600
+}
 
-resource "aws_cloudfront_distribution" "s3_distribution" {
+resource "aws_cloudfront_distribution" "crc" {
   origin {
     domain_name              = aws_s3_bucket.crc.bucket_regional_domain_name
     origin_id                = local.s3_origin_id
