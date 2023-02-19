@@ -42,12 +42,14 @@ resource "aws_s3_object" "resetcss" {
   bucket = aws_s3_bucket.crc.id
   key    = "reset-fonts-grids.css"
   source = "reset-fonts-grids.css"
+  content_type = "text/css"
 }
 
 resource "aws_s3_object" "resumecss" {
   bucket = aws_s3_bucket.crc.id
   key    = "resume.css"
   source = "resume.css"
+  content_type = "text/css"
 }
 
 locals {
