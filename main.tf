@@ -5,6 +5,12 @@ terraform {
       version = "~> 4.0"
     }
   }
+  backend "remote" {
+    organization = "gryder-io"
+    workspaces {
+      name = "crc-terraform"
+    }
+  }
 }
 
 # Configure the AWS Provider
