@@ -38,6 +38,13 @@ resource "aws_s3_object" "index" {
   content_type = "text/html"
 }
 
+resource "aws_s3_object" "favicon" {
+  bucket = aws_s3_bucket.crc.id
+  key    = "favicon.ico"
+  source = "favicon.ico"
+  content_type = "image/x-icon"
+}
+
 resource "aws_s3_object" "resetcss" {
   bucket = aws_s3_bucket.crc.id
   key    = "reset-fonts-grids.css"
