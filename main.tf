@@ -79,6 +79,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     max_ttl                = 86400
   }
 
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+      locations        = []
+    }
+  }
+  
   viewer_certificate {
     acm_certificate_arn = data.aws_acm_certificate.resume.arn
   }
