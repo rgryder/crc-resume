@@ -36,6 +36,7 @@ resource "aws_s3_object" "index" {
   key    = "index.html"
   source = "index.html"
   content_type = "text/html"
+  etag = filemd5("index.html")
 }
 
 resource "aws_s3_object" "favicon" {
@@ -43,6 +44,7 @@ resource "aws_s3_object" "favicon" {
   key    = "favicon.ico"
   source = "favicon.ico"
   content_type = "image/x-icon"
+  etag = filemd5("favicon.ico")
 }
 
 resource "aws_s3_object" "cissp" {
@@ -50,6 +52,7 @@ resource "aws_s3_object" "cissp" {
   key    = "certified-information-systems-security-professional-cissp.png"
   source = "certified-information-systems-security-professional-cissp.png"
   content_type = "image/png"
+  etag = filemd5("certified-information-systems-security-professional-cissp.png")
 }
 
 resource "aws_s3_object" "terracert" {
@@ -57,6 +60,7 @@ resource "aws_s3_object" "terracert" {
   key    = "hashicorp-certified-terraform-associate-002.png"
   source = "hashicorp-certified-terraform-associate-002.png"
   content_type = "image/png"
+  etag = filemd5("hashicorp-certified-terraform-associate-002.png")
 }
 
 resource "aws_s3_object" "resetcss" {
@@ -64,6 +68,7 @@ resource "aws_s3_object" "resetcss" {
   key    = "reset-fonts-grids.css"
   source = "reset-fonts-grids.css"
   content_type = "text/css"
+  etag = filemd5("reset-fonts-grids.css")
 }
 
 resource "aws_s3_object" "resumecss" {
@@ -71,6 +76,7 @@ resource "aws_s3_object" "resumecss" {
   key    = "resume.css"
   source = "resume.css"
   content_type = "text/css"
+  etag = filemd5("resume.css")
 }
 
 locals {
