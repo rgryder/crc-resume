@@ -45,6 +45,20 @@ resource "aws_s3_object" "favicon" {
   content_type = "image/x-icon"
 }
 
+resource "aws_s3_object" "cissp" {
+  bucket = aws_s3_bucket.crc.id
+  key    = "certified-information-systems-security-professional-cissp.png"
+  source = "certified-information-systems-security-professional-cissp.png"
+  content_type = "image/png"
+}
+
+resource "aws_s3_object" "terracert" {
+  bucket = aws_s3_bucket.crc.id
+  key    = "hashicorp-certified-terraform-associate-002.png"
+  source = "hashicorp-certified-terraform-associate-002.png"
+  content_type = "image/png"
+}
+
 resource "aws_s3_object" "resetcss" {
   bucket = aws_s3_bucket.crc.id
   key    = "reset-fonts-grids.css"
