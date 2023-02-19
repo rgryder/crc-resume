@@ -57,7 +57,6 @@ data "aws_acm_certificate" "resume" {
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name              = aws_s3_bucket.crc.bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.default.id
     origin_id                = local.s3_origin_id
   }
 
@@ -81,6 +80,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.resume.arn
+    acm_certificate_arn = data.aws_acm_certificate.resume.arn
   }
 }
