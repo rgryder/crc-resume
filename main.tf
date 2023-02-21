@@ -93,7 +93,7 @@ resource "aws_acm_certificate" "resume" {
   }
 }
 
-resource "cloudflare_record" "resume" {
+resource "cloudflare_record" "resume_cert_validation" {
    for_each = {
     for dvo in aws_acm_certificate.resume.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
@@ -111,7 +111,7 @@ resource "cloudflare_record" "resume" {
 
 resource "aws_acm_certificate_validation" "resume" {
   certificate_arn         = aws_acm_certificate.resume.arn
-  validation_record_fqdns = [for record in cloudflare_record.resume : record.hostname]
+  validation_record_fqdns = [for record in cloudflare_record.resume_cert_validation : record.hostname]
 }
 
 resource "aws_cloudfront_cache_policy" "crc" {
