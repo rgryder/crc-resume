@@ -84,10 +84,34 @@ locals {
   resume_url = "resume.gryder.io"
 }
 
-data "aws_acm_certificate" "resume" {
-  domain      = local.resume_url
-  types       = ["AMAZON_ISSUED"]
-  most_recent = true
+resource "aws_acm_certificate" "resume" {
+  domain_name       = "gryder.io"
+  validation_method = "DNS"
+  
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "cloudflare_record" "resume" {
+   for_each = {
+    for dvo in aws_acm_certificate.resume.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+     
+  zone_id = data.cloudflare_zones.gryderio.zones[0].id
+  name    = each.value.name
+  value   = each.value.record
+  type    = each.value.type
+  ttl     = 3600
+}
+
+resource "aws_acm_certificate_validation" "resume" {
+  certificate_arn         = aws_acm_certificate.resume.arn
+  validation_record_fqdns = [for record in cloudflare_record.resume : record.hostname]
 }
 
 resource "aws_cloudfront_cache_policy" "crc" {
@@ -153,7 +177,7 @@ resource "aws_cloudfront_distribution" "crc" {
   }
   
   viewer_certificate {
-    acm_certificate_arn = data.aws_acm_certificate.resume.arn
+    acm_certificate_arn = data.aws_acm_certificate_validation.resume.arn
     ssl_support_method = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
