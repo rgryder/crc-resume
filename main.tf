@@ -85,7 +85,7 @@ locals {
 }
 
 resource "aws_acm_certificate" "resume" {
-  domain_name       = "gryder.io"
+  domain_name       = "resume.gryder.io"
   validation_method = "DNS"
   
   lifecycle {
