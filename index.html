@@ -23,6 +23,16 @@ axios.post("https://resumeapi.gryder.io")
 })
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>	
+
+<script>
+var button = document.getElementById('pdf');
+function savePDF() {
+    var element = document.getElementById('body');
+    html2pdf(element);
+}
+</script>
+
 <div id="doc2" class="yui-t7">
 	<div id="inner">
 	
@@ -36,7 +46,7 @@ axios.post("https://resumeapi.gryder.io")
 
 				<div class="yui-u">
 					<div class="contact-info">
-						<h3><a id="pdf" href="#">Download PDF</a></h3>
+						<h3><a id="pdf" href="#" data-html2canvas-ignore="true">Download PDF</a></h3>
 						<h3><a href="mailto:rob@gryder.io">rob@gryder.io</a></h3>
 					</div><!--// .contact-info -->
 				</div>
