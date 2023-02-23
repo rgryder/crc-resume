@@ -27,6 +27,7 @@ axios.post("https://resumeapi.gryder.io")
 
 <script>
 var button = document.getElementById('pdf');
+button.onclick = savePDF;
 function savePDF() {
     var element = document.getElementById('body');
     html2pdf(element);
