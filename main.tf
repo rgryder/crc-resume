@@ -12,7 +12,7 @@ terraform {
   backend "remote" {
     organization = "gryder-io"
     workspaces {
-      name = "crc-terraform"
+      name = "crc-resume"
     }
   }
 }
