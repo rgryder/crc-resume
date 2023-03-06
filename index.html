@@ -19,7 +19,7 @@
 <script>
 axios.post("https://resumeapi.gryder.io")
 .then(response =>{
-	document.getElementById("visitorCount").innerHTML = document.getElementById("visitorCount").innerHTML.replace('0',response.data.body.Value.N)
+	document.getElementById("visitorCount").textContent = document.getElementById("visitorCount").textContent.replace('0',response.data.body.Value.N)
 })
 </script>
 
