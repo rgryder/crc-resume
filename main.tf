@@ -26,6 +26,15 @@ resource "aws_s3_bucket" "crc" {
   bucket = "rgrydercrc"
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "crc" {
+  bucket = aws_s3_bucket.crc.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+  }
+}
+
 resource "aws_s3_bucket_acl" "crc" {
   bucket = aws_s3_bucket.crc.id
   acl    = "private"
